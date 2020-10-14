@@ -6,13 +6,15 @@ import javafx.beans.property.SimpleStringProperty;
 import java.io.Serializable;
 
 public class Food implements Serializable {
-    private int id;
+    private int id ;
+    private static int cruID = 1;
     private String name;
     private int vnd;
     private int kg;
     private int thanhTien;
 
     public Food() {
+        this.id = cruID++;
     }
 
     public Food(int id, String name, int vnd, int kg) {
@@ -45,10 +47,6 @@ public class Food implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
-    //    public void setName(String name) {
-//        this.name = name;
-//    }
 
     public int getVnd() {
         return vnd;

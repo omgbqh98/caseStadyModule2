@@ -13,13 +13,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="729.0" prefWidth="736.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="729.0" prefWidth="929.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
-      <Button layoutX="428.0" layoutY="101.0" mnemonicParsing="false" onAction="#writeFile" prefHeight="25.0" prefWidth="51.0" text="Save" textFill="#0037fe">
+      <Button layoutX="443.0" layoutY="165.0" mnemonicParsing="false" onAction="#writeFile" prefHeight="35.0" prefWidth="77.0" text="Save" textFill="#0037fe">
          <font>
-            <Font name="System Italic" size="12.0" />
+            <Font name="System Italic" size="14.0" />
          </font></Button>
-      <TableView fx:id="table" layoutX="14.0" layoutY="215.0" prefHeight="255.0" prefWidth="529.0">
+      <TableView fx:id="table" layoutX="18.0" layoutY="215.0" prefHeight="292.0" prefWidth="503.0">
         <columns>
           <TableColumn fx:id="idColumn" prefWidth="107.33334732055664" text="id" />
           <TableColumn fx:id="nameColumn" prefWidth="124.66667175292969" text="name" />
@@ -27,48 +27,64 @@
             <TableColumn fx:id="kgColumn" prefWidth="184.66671752929688" text="số lượng" />
         </columns>
       </TableView>
-      <Label layoutX="58.0" layoutY="17.0" text="Id" />
       <Label layoutX="167.0" layoutY="5.0" />
-      <Label layoutX="55.0" layoutY="49.0" text="Giá" />
-      <Label layoutX="303.0" layoutY="49.0" text="Kg" />
-      <TextField fx:id="idText" layoutX="96.0" layoutY="13.0" prefHeight="25.0" prefWidth="125.0" promptText="input ID" />
-      <TextField fx:id="nameText" layoutX="346.0" layoutY="13.0" prefHeight="25.0" prefWidth="125.0" promptText="input Name" />
-      <TextField fx:id="vndText" layoutX="96.0" layoutY="45.0" prefHeight="25.0" prefWidth="125.0" promptText="input Giá" />
-      <TextField fx:id="kgText" layoutX="346.0" layoutY="45.0" prefHeight="25.0" prefWidth="125.0" promptText="input Kg" />
-      <Label layoutX="295.0" layoutY="17.0" text="Name" />
-      <Button layoutX="429.0" layoutY="135.0" mnemonicParsing="false" onAction="#delete" text="Delete">
+      <Label layoutX="55.0" layoutY="49.0" text="Giá" textFill="#0e14dc" />
+      <Label layoutX="56.0" layoutY="82.0" text="Kg" textFill="#141be5" />
+      <TextField fx:id="nameText" layoutX="90.0" layoutY="9.0" prefHeight="25.0" prefWidth="125.0" promptText="input Name">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></TextField>
+      <TextField fx:id="vndText" layoutX="90.0" layoutY="44.0" prefHeight="25.0" prefWidth="125.0" promptText="input Giá">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font></TextField>
+      <TextField fx:id="kgText" layoutX="90.0" layoutY="78.0" prefHeight="25.0" prefWidth="125.0" promptText="input Kg">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></TextField>
+      <Label layoutX="48.0" layoutY="13.0" text="Name" textFill="#1310e5" />
+      <Button layoutX="386.0" layoutY="61.0" mnemonicParsing="false" onAction="#delete" prefHeight="25.0" prefWidth="85.0" text="Delete">
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Button>
-      <TextField fx:id="searchField" layoutX="68.0" layoutY="136.0" prefHeight="25.0" prefWidth="181.0" promptText="Search Food" />
-      <TextField fx:id="buyKgText" disable="true" editable="false" layoutX="584.0" layoutY="88.0" prefHeight="25.0" prefWidth="135.0" promptText="kg" />
-      <TextField fx:id="buyVndText" disable="true" layoutX="584.0" layoutY="61.0" prefHeight="25.0" prefWidth="135.0" promptText="Giá" />
-      <Button layoutX="645.0" layoutY="148.0" mnemonicParsing="false" onAction="#buy" text="Thanh toán" />
-      <TableView fx:id="table2" layoutX="543.0" layoutY="215.0" prefHeight="255.0" prefWidth="181.0">
+      <TextField fx:id="searchField" layoutX="76.0" layoutY="169.0" prefHeight="25.0" prefWidth="188.0" promptText="Search Food">
+         <font>
+            <Font name="Arial Black" size="12.0" />
+         </font></TextField>
+      <TextField fx:id="buyKgText" disable="true" layoutX="639.0" layoutY="86.0" prefHeight="25.0" prefWidth="135.0" promptText="kg" />
+      <TextField fx:id="buyVndText" disable="true" layoutX="639.0" layoutY="61.0" prefHeight="25.0" prefWidth="135.0" promptText="Giá" />
+      <Button layoutX="698.0" layoutY="148.0" mnemonicParsing="false" onAction="#buy" text="Thanh toán" />
+      <TableView fx:id="table2" layoutX="522.0" layoutY="215.0" prefHeight="292.0" prefWidth="353.0">
         <columns>
-          <TableColumn fx:id="thanhTienColumn" prefWidth="198.66667938232422" text="Thành Tiền" />
+          <TableColumn fx:id="nameColimn2" prefWidth="88.0" text="name" />
+            <TableColumn fx:id="vndColumn2" prefWidth="97.3333740234375" text="Gia" />
+            <TableColumn fx:id="kgColumn2" prefWidth="67.3333740234375" text="kg" />
+            <TableColumn fx:id="thanhTienColumn" prefWidth="108.0" text="Thành Tiền" />
         </columns>
       </TableView>
-      <Button layoutX="584.0" layoutY="148.0" mnemonicParsing="false" onAction="#select" prefHeight="25.0" prefWidth="51.0" text="Select" />
-      <ImageView fitHeight="57.0" fitWidth="17.0" layoutX="47.0" layoutY="139.0" pickOnBounds="true" preserveRatio="true">
+      <Button layoutX="639.0" layoutY="148.0" mnemonicParsing="false" onAction="#select" prefHeight="25.0" prefWidth="51.0" text="Select" />
+      <ImageView fitHeight="57.0" fitWidth="17.0" layoutX="55.0" layoutY="173.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../image/kinhlup.jpg" />
          </image>
       </ImageView>
-      <Button layoutX="584.0" layoutY="189.0" mnemonicParsing="false" onAction="#delete2" prefHeight="25.0" prefWidth="36.0" text="xóa" />
-      <Label layoutX="561.0" layoutY="93.0" text="kg" />
-      <Label layoutX="560.0" layoutY="65.0" text="giá" />
-      <Button layoutX="262.0" layoutY="135.0" mnemonicParsing="false" onAction="#update" text="Update" textFill="#1d8746">
+      <Button layoutX="639.0" layoutY="188.0" mnemonicParsing="false" onAction="#delete2" prefHeight="25.0" prefWidth="36.0" text="xóa" />
+      <Label layoutX="618.0" layoutY="90.0" text="kg" textFill="#df1c1c" />
+      <Label layoutX="616.0" layoutY="60.0" text="giá" textFill="#e31616" />
+      <Button layoutX="386.0" layoutY="27.0" mnemonicParsing="false" onAction="#update" prefHeight="25.0" prefWidth="85.0" text="Update" textFill="#1d8746">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font></Button>
-      <TextField fx:id="buyNameText" disable="true" layoutX="584.0" layoutY="36.0" prefHeight="25.0" prefWidth="135.0" promptText="FoodName" />
-      <TextField fx:id="buyIDText" disable="true" layoutX="584.0" layoutY="9.0" prefHeight="25.0" prefWidth="135.0" promptText="ID" />
-      <Label layoutX="561.0" layoutY="13.0" text="ID" />
-      <Label layoutX="551.0" layoutY="40.0" text="Name" />
-      <Button layoutX="634.0" layoutY="189.0" mnemonicParsing="false" onAction="#finish" prefHeight="25.0" prefWidth="87.0" text="Hoàn Thành" />
-      <TextField fx:id="newKgText" layoutX="584.0" layoutY="113.0" prefHeight="25.0" prefWidth="135.0" promptText="input kg" />
-      <TableView fx:id="tablePool" layoutX="262.0" layoutY="494.0" prefHeight="129.0" prefWidth="529.0">
+      <TextField fx:id="buyNameText" disable="true" layoutX="639.0" layoutY="36.0" prefHeight="25.0" prefWidth="135.0" promptText="FoodName" />
+      <TextField fx:id="buyIDText" disable="true" layoutX="639.0" layoutY="9.0" prefHeight="25.0" prefWidth="135.0" promptText="ID" />
+      <Label layoutX="619.0" layoutY="13.0" text="ID" textFill="#e11717" />
+      <Label layoutX="603.0" layoutY="40.0" text="Name" textFill="#df0f0f" />
+      <Button layoutX="686.0" layoutY="188.0" mnemonicParsing="false" onAction="#finish" prefHeight="25.0" prefWidth="87.0" text="Hoàn Thành">
+         <font>
+            <Font name="Bell MT" size="12.0" />
+         </font></Button>
+      <TextField fx:id="newKgText" layoutX="639.0" layoutY="115.0" prefHeight="25.0" prefWidth="135.0" promptText="input kg" />
+      <TableView fx:id="tablePool" layoutX="189.0" layoutY="600.0" prefHeight="129.0" prefWidth="529.0">
          <columns>
             <TableColumn fx:id="idColumn1" prefWidth="107.33334732055664" text="id" />
             <TableColumn fx:id="nameColumn1" prefWidth="124.66667175292969" text="name" />
@@ -76,7 +92,7 @@
             <TableColumn fx:id="vndColumn1" prefWidth="172.66665649414062" text="giá tiền" />
          </columns>
       </TableView>
-      <MenuButton layoutX="47.0" layoutY="176.0" mnemonicParsing="false" text="Select List">
+      <MenuButton layoutX="323.0" layoutY="165.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="85.0" text="Select List">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#selectListHeo" text="List Heo" />
           <MenuItem mnemonicParsing="false" onAction="#selectListBo" text="List Bò" />
@@ -84,7 +100,7 @@
             <MenuItem mnemonicParsing="false" onAction="#slectListAll" text="List All" />
         </items>
       </MenuButton>
-      <MenuButton layoutX="351.0" layoutY="103.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="61.0" text="Add" textFill="#ec0d0d">
+      <MenuButton layoutX="304.0" layoutY="28.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="61.0" text="Add" textFill="#ec0d0d">
         <items>
 <!--          <MenuItem mnemonicParsing="false" onAction="#addAll" onMenuValidation="#addHeo" text="Add List All" />-->
 <!--          <MenuItem mnemonicParsing="false" onAction="#addBo" onMenuValidation="#addBo" text="Add List Bò" />-->
@@ -97,10 +113,25 @@
          </font>
       </MenuButton>
       <BorderPane layoutX="-53.0" layoutY="420.0" prefHeight="200.0" prefWidth="200.0" />
-      <Button layoutX="198.0" layoutY="494.0" mnemonicParsing="false" onAction="#deletePool" text="Xong" textFill="#1d8746">
+      <Button layoutX="198.0" layoutY="574.0" mnemonicParsing="false" onAction="#deletePool" text="Xong" textFill="#1d8746">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font>
       </Button>
+      <ImageView fitHeight="17.0" fitWidth="13.0" layoutX="395.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/Add-icon.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="17.0" fitWidth="25.0" layoutX="393.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/Recycle-Bin-icon.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="17.0" fitWidth="17.0" layoutX="445.0" layoutY="173.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/Files-icon.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

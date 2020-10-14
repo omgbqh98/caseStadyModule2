@@ -10,10 +10,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import model.Food;
 import java.io.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.text.NumberFormat;
+import java.util.*;
+
+import static java.lang.Integer.parseInt;
 
 public class Controller implements Initializable {
     @FXML
@@ -40,6 +40,12 @@ public class Controller implements Initializable {
     private TableColumn<Food, Integer> kgColumn1;
     @FXML
     private TableColumn<Food, Integer> thanhTienColumn;
+    @FXML
+    private TableColumn<Food, String> nameColimn2;
+    @FXML
+    private TableColumn<Food, Integer> vndColumn2;
+    @FXML
+    private TableColumn<Food, Integer> kgColumn2;
     public ObservableList<Food> moneyList;
     public ObservableList<Food> foodListAll;
     public ObservableList<Food> foodListGa;
@@ -68,18 +74,13 @@ public class Controller implements Initializable {
     private TextField newKgText;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        moneyList =FXCollections.observableArrayList(
-               readFile());
-        foodListHeo =FXCollections.observableArrayList(
-               );
-        foodListAll = FXCollections.observableArrayList(
-                readFile());
-        listPool = FXCollections.observableArrayList(
-                readFile());
-        foodListBo = FXCollections.observableArrayList(
-              );
-        foodListGa = FXCollections.observableArrayList(
-               );
+        NumberFormat nf = NumberFormat.getInstance(new Locale("en", "US"));
+        moneyList =FXCollections.observableArrayList();
+        foodListHeo =FXCollections.observableArrayList(readFile());
+        foodListAll = FXCollections.observableArrayList();
+        listPool = FXCollections.observableArrayList(readFile());
+        foodListBo = FXCollections.observableArrayList();
+        foodListGa = FXCollections.observableArrayList();
         foodListAll.addAll(foodListHeo);
         foodListAll.addAll(foodListGa);
         foodListAll.addAll(foodListBo);
@@ -99,16 +100,17 @@ public class Controller implements Initializable {
         table.setItems(foodListBo);
         table.setItems(foodListGa);
         tablePool.setItems(listPool);
+
+        nameColimn2.setCellValueFactory(new PropertyValueFactory<Food, String>("name"));
+        vndColumn2.setCellValueFactory(new PropertyValueFactory<Food, Integer>("vnd"));
+        kgColumn2.setCellValueFactory(new PropertyValueFactory<Food, Integer>("kg"));
         thanhTienColumn.setCellValueFactory(new PropertyValueFactory<Food, Integer>("thanhTien"));
 
         this.search();
     }
 
+//    String val = nf.format(200000000);
 
-    public void slectListAll(ActionEvent event) {
-        foodListAll.clear();
-        foodListAll.addAll(listPool);
-    }
     public void selectListGa(ActionEvent event) {
         foodListAll.clear();
         foodListAll.addAll(foodListGa);
@@ -121,14 +123,23 @@ public class Controller implements Initializable {
         foodListAll.clear();
         foodListAll.addAll(foodListBo);
     }
+    public void slectListAll(ActionEvent event) {
+        foodListAll.clear();
+        foodListAll.addAll(listPool);
+    }
 
     public void update(ActionEvent event) {
         Food selected = table.getSelectionModel().getSelectedItem();
-        idText.setText(String.valueOf(selected.getId()));
         nameText.setText(String.valueOf(selected.getName()));
         kgText.setText(String.valueOf(selected.getKg()));
         vndText.setText(String.valueOf(selected.getVnd()));
         foodListAll.remove(selected);
+        for (int i = 0; i < listPool.size(); i++) {
+            if (listPool.get(i).getId() == selected.getId()) {
+                listPool.remove(listPool.get(i));
+            }
+        }
+
     }
     public void select(ActionEvent event) {
         Food selected = table.getSelectionModel().getSelectedItem();
@@ -140,58 +151,59 @@ public class Controller implements Initializable {
     }
     public void buy(ActionEvent event) {
         Food money = new Food();
-        money.setThanhTien(Integer.parseInt(buyVndText.getText())*Integer.parseInt(buyKgText.getText()));
-        moneyList.add(money);
+        money.setName(buyNameText.getText());
+        money.setVnd(parseInt(buyVndText.getText()));
+        money.setKg(parseInt(newKgText.getText()));
+        money.setThanhTien(parseInt(buyVndText.getText())* parseInt(buyKgText.getText()));
+        if (parseInt(buyKgText.getText()) < parseInt(newKgText.getText())) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("lỗi lặp");
+            alert.setHeaderText(null);
+            alert.setContentText("Số Lượng KG không đủ");
+            alert.showAndWait();
+        } else {
+            moneyList.add(money);
+        }
         foodListAll.remove(money);
     }
 
     public void finish() {
         Food newFood = new Food();
-        newFood.setId(Integer.parseInt(buyIDText.getText()));
+        newFood.setId(parseInt(buyIDText.getText()));
         newFood.setName(buyNameText.getText());
-        newFood.setVnd(Integer.parseInt(buyVndText.getText()));
-        newFood.setKg((Integer.parseInt(buyKgText.getText()))-Integer.parseInt(newKgText.getText()));
-        if (newFood.getKg() < 0) {
+        newFood.setVnd(parseInt(buyVndText.getText()));
+        newFood.setKg((parseInt(buyKgText.getText()))- parseInt(newKgText.getText()));
+        if (newFood.getKg() == 0) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("lỗi lặp");
+            alert.setTitle("Hết");
             alert.setHeaderText(null);
-            alert.setContentText("kg không dủ");
+            alert.setContentText("Đã hết hàng");
             alert.showAndWait();
+            buyIDText.clear();
+            buyNameText.clear();
+            buyVndText.clear();
+            buyKgText.clear();
+            newKgText.clear();
         } else {
             foodListAll.add(newFood);
         }
-        buyIDText.clear();
-        buyNameText.clear();
-        buyVndText.clear();
-        buyKgText.clear();
-        newKgText.clear();
+
+
     }
     public void addHeo(ActionEvent event) {
         Food newFood = new Food();
         try {
-            newFood.setId(Integer.parseInt(idText.getText()));
             newFood.setName(nameText.getText());
-            newFood.setVnd(Integer.parseInt(vndText.getText()));
-            newFood.setKg(Integer.parseInt(kgText.getText()));
-            boolean check = true;
-            for (int i = 0; i < foodListAll.size(); i++) {
-                if (Integer.parseInt(idText.getText()) == foodListAll.get(i).getId()) {
-                    check = false;
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("lỗi lặp");
-                    alert.setHeaderText(null);
-                    alert.setContentText("ID đã tồn tại");
-                    alert.showAndWait();
-                }
-            }
-            if (check) {
+            newFood.setVnd(parseInt(vndText.getText()));
+            newFood.setKg(parseInt(kgText.getText()));
                 foodListHeo.add(newFood);
-                foodListAll.addAll(foodListHeo);
+                foodListAll.add(foodListHeo.get(foodListHeo.size()-1));
                 foodListHeo.remove(newFood);
                 foodListHeo.add(newFood);
-                listPool.addAll(newFood);
-
-            }
+                listPool.add(foodListHeo.get(foodListHeo.size()-1));
+                nameText.clear();
+                vndText.clear();
+                kgText.clear();
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Invalid Input!");
@@ -199,37 +211,23 @@ public class Controller implements Initializable {
             alert.setContentText("lỗi nhập thông tin");
             alert.showAndWait();
         }
-        idText.clear();
-        nameText.clear();
-        vndText.clear();
-        kgText.clear();
+
 
     }
     public void addGa(ActionEvent event) {
         Food newFood = new Food();
         try {
-            newFood.setId(Integer.parseInt(idText.getText()));
             newFood.setName(nameText.getText());
-            newFood.setVnd(Integer.parseInt(vndText.getText()));
-            newFood.setKg(Integer.parseInt(kgText.getText()));
-            boolean check = true;
-            for (int i = 0; i < foodListAll.size(); i++) {
-                if (Integer.parseInt(idText.getText()) == foodListAll.get(i).getId()) {
-                    check = false;
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("lỗi lặp");
-                    alert.setHeaderText(null);
-                    alert.setContentText("ID đã tồn tại");
-                    alert.showAndWait();
-                }
-            }
-            if (check) {
+            newFood.setVnd(parseInt(vndText.getText()));
+            newFood.setKg(parseInt(kgText.getText()));
                 foodListGa.add(newFood);
-                foodListAll.addAll(foodListGa);
+                foodListAll.add(foodListGa.get(foodListGa.size()-1));
                 foodListGa.remove(newFood);
                 foodListGa.add(newFood);
-                listPool.addAll(newFood);
-            }
+                listPool.add(foodListGa.get(foodListGa.size()-1));
+                nameText.clear();
+                vndText.clear();
+                kgText.clear();
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Invalid Input!");
@@ -237,37 +235,23 @@ public class Controller implements Initializable {
             alert.setContentText("Chưa nhập đúng thông tin");
             alert.showAndWait();
         }
-        idText.clear();
-        nameText.clear();
-        vndText.clear();
-        kgText.clear();
+
 
     }
     public void addBo(ActionEvent event) {
         Food newFood1 = new Food();
         try {
-            newFood1.setId(Integer.parseInt(idText.getText()));
             newFood1.setName(nameText.getText());
-            newFood1.setVnd(Integer.parseInt(vndText.getText()));
-            newFood1.setKg(Integer.parseInt(kgText.getText()));
-            boolean check = true;
-            for (int i = 0; i < foodListAll.size(); i++) {
-                if (Integer.parseInt(idText.getText()) == foodListAll.get(i).getId()) {
-                    check = false;
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("lỗi lặp");
-                    alert.setHeaderText(null);
-                    alert.setContentText("ID đã tồn tại");
-                    alert.showAndWait();
-                }
-            }
-            if (check) {
+            newFood1.setVnd(parseInt(vndText.getText()));
+            newFood1.setKg(parseInt(kgText.getText()));
                     foodListBo.add(newFood1);
-                    foodListAll.addAll(foodListBo);
+                    foodListAll.add(foodListBo.get(foodListBo.size()-1));
                     foodListBo.remove(newFood1);
                     foodListBo.add(newFood1);
-                    listPool.addAll(newFood1);
-                }
+                    listPool.add(foodListBo.get(foodListBo.size()-1));
+                    nameText.clear();
+                    vndText.clear();
+                    kgText.clear();
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Invalid Input!");
@@ -275,10 +259,6 @@ public class Controller implements Initializable {
             alert.setContentText("Please try again");
             alert.showAndWait();
         }
-        idText.clear();
-        nameText.clear();
-        vndText.clear();
-        kgText.clear();
     }
 
     public void search() {
@@ -311,6 +291,11 @@ public class Controller implements Initializable {
             Optional<ButtonType> choice = alert.showAndWait();
             if (choice.get().getButtonData() == ButtonBar.ButtonData.YES) {
                 foodListAll.remove(selectedFood);
+                for (int i = 0; i < listPool.size(); i++) {
+                    if (listPool.get(i).getId() == selectedFood.getId()) {
+                        listPool.remove(listPool.get(i));
+                    }
+                }
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -328,14 +313,16 @@ public class Controller implements Initializable {
         Food selected1 = tablePool.getSelectionModel().getSelectedItem();
         listPool.remove(selected1);
     }
+
+
     public void writeFile(){
-        FileOutputStream file;
-        ObjectOutputStream object;
+        FileOutputStream fileHeo;
+        ObjectOutputStream objectHeo;
         try {
-            file= new FileOutputStream("Food.txt");
-            object = new ObjectOutputStream(file);
-            for(Food food : foodListAll){
-                object.writeObject(food);
+            fileHeo= new FileOutputStream("Food.txt");
+            objectHeo = new ObjectOutputStream(fileHeo);
+            for(Food food : foodListHeo){
+                objectHeo.writeObject(food);
             }
         } catch (IOException exception) {
             exception.printStackTrace();
