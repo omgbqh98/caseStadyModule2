@@ -11,6 +11,9 @@ import model.Food;
 import java.io.*;
 import java.net.URL;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static java.lang.Integer.parseInt;
@@ -22,6 +25,16 @@ public class Controller implements Initializable {
     private TableView<Food> tablePool;
     @FXML
     private TableView<Food> table2;
+    @FXML
+    private TableView<Food> tableHistory;
+    @FXML
+    private TableColumn<Food, Integer> vndColumnHistory;
+    @FXML
+    private TableColumn<Food, String> nameColumnHistory;
+    @FXML
+    private TableColumn<Food, Integer> kgColumnHistory;
+    @FXML
+    private TableColumn<Food, Integer> thanhTienColumnHistory;
     @FXML
     private TableColumn<Food, Integer> idColumn;
     @FXML
@@ -43,6 +56,8 @@ public class Controller implements Initializable {
     @FXML
     private TableColumn<Food, String> nameColimn2;
     @FXML
+    private TableColumn<Food, String> timeColum;
+    @FXML
     private TableColumn<Food, Integer> vndColumn2;
     @FXML
     private TableColumn<Food, Integer> kgColumn2;
@@ -52,6 +67,7 @@ public class Controller implements Initializable {
     public ObservableList<Food> foodListBo;
     public ObservableList<Food> listPool;
     public ObservableList<Food> foodListHeo;
+    public ObservableList<Food> listHistory;
     @FXML
     public TextField idText;
     @FXML
@@ -76,11 +92,12 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         NumberFormat nf = NumberFormat.getInstance(new Locale("en", "US"));
         moneyList =FXCollections.observableArrayList();
-        foodListHeo =FXCollections.observableArrayList(readFile());
+        foodListHeo =FXCollections.observableArrayList();
         foodListAll = FXCollections.observableArrayList();
         listPool = FXCollections.observableArrayList(readFile());
         foodListBo = FXCollections.observableArrayList();
-        foodListGa = FXCollections.observableArrayList();
+        foodListGa = FXCollections.observableArrayList(readFile());
+        listHistory = FXCollections.observableArrayList();
         foodListAll.addAll(foodListHeo);
         foodListAll.addAll(foodListGa);
         foodListAll.addAll(foodListBo);
@@ -102,15 +119,23 @@ public class Controller implements Initializable {
         tablePool.setItems(listPool);
 
         nameColimn2.setCellValueFactory(new PropertyValueFactory<Food, String>("name"));
+        timeColum.setCellValueFactory(new PropertyValueFactory<Food, String>("time"));
         vndColumn2.setCellValueFactory(new PropertyValueFactory<Food, Integer>("vnd"));
         kgColumn2.setCellValueFactory(new PropertyValueFactory<Food, Integer>("kg"));
         thanhTienColumn.setCellValueFactory(new PropertyValueFactory<Food, Integer>("thanhTien"));
 
+        nameColumnHistory.setCellValueFactory(new PropertyValueFactory<Food, String>("name"));
+        vndColumnHistory.setCellValueFactory(new PropertyValueFactory<Food, Integer>("vnd"));
+        kgColumnHistory.setCellValueFactory(new PropertyValueFactory<Food, Integer>("kg"));
+        thanhTienColumnHistory.setCellValueFactory(new PropertyValueFactory<Food, Integer>("thanhTien"));
+
         this.search();
     }
 
-//    String val = nf.format(200000000);
-
+    public void history(ActionEvent event) {
+        moneyList.clear();
+        moneyList.addAll(listHistory);
+    }
     public void selectListGa(ActionEvent event) {
         foodListAll.clear();
         foodListAll.addAll(foodListGa);
@@ -128,20 +153,21 @@ public class Controller implements Initializable {
         foodListAll.addAll(listPool);
     }
 
-    public void update(ActionEvent event) {
+    public void update(ActionEvent event) throws ParseException {
         Food selected = table.getSelectionModel().getSelectedItem();
+        NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
+        Number number= nf.parse(selected.getVnd());
         nameText.setText(String.valueOf(selected.getName()));
         kgText.setText(String.valueOf(selected.getKg()));
-        vndText.setText(String.valueOf(selected.getVnd()));
+        vndText.setText(String.valueOf(number));
         foodListAll.remove(selected);
         for (int i = 0; i < listPool.size(); i++) {
-            if (listPool.get(i).getId() == selected.getId()) {
+            if (listPool.get(i).getName().equals(selected.getName()) ) {
                 listPool.remove(listPool.get(i));
             }
         }
-
     }
-    public void select(ActionEvent event) {
+    public void select(ActionEvent event)  {
         Food selected = table.getSelectionModel().getSelectedItem();
         buyIDText.setText(String.valueOf(selected.getId()));
         buyNameText.setText(String.valueOf(selected.getName()));
@@ -149,13 +175,20 @@ public class Controller implements Initializable {
         buyVndText.setText(String.valueOf(selected.getVnd()));
         foodListAll.remove(selected);
     }
-    public void buy(ActionEvent event) {
+    public void buy(ActionEvent event) throws ParseException {
         Food money = new Food();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm dd/MM/yy");
+        LocalDateTime now = LocalDateTime.now();
+        String timeIn = dtf.format(now);
+        money.setTime(timeIn);
+        NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
+        Number gia = nf.parse(buyVndText.getText());
+        long gia2 = (long) gia;
         money.setName(buyNameText.getText());
-        money.setVnd(parseInt(buyVndText.getText()));
+        money.setVnd(buyVndText.getText());
         money.setKg(parseInt(newKgText.getText()));
-        money.setThanhTien(parseInt(buyVndText.getText())* parseInt(buyKgText.getText()));
-        if (parseInt(buyKgText.getText()) < parseInt(newKgText.getText())) {
+        money.setThanhTien((gia2) * Long.parseLong(buyKgText.getText()));
+        if (Integer.parseInt(buyKgText.getText()) < Integer.parseInt(newKgText.getText())) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("lỗi lặp");
             alert.setHeaderText(null);
@@ -163,6 +196,7 @@ public class Controller implements Initializable {
             alert.showAndWait();
         } else {
             moneyList.add(money);
+            listHistory.add(moneyList.get(moneyList.size()-1));
         }
         foodListAll.remove(money);
     }
@@ -171,7 +205,7 @@ public class Controller implements Initializable {
         Food newFood = new Food();
         newFood.setId(parseInt(buyIDText.getText()));
         newFood.setName(buyNameText.getText());
-        newFood.setVnd(parseInt(buyVndText.getText()));
+        newFood.setVnd(buyVndText.getText());
         newFood.setKg((parseInt(buyKgText.getText()))- parseInt(newKgText.getText()));
         if (newFood.getKg() == 0) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -186,15 +220,20 @@ public class Controller implements Initializable {
             newKgText.clear();
         } else {
             foodListAll.add(newFood);
+            buyIDText.clear();
+            buyNameText.clear();
+            buyVndText.clear();
+            buyKgText.clear();
+            newKgText.clear();
         }
-
-
     }
     public void addHeo(ActionEvent event) {
         Food newFood = new Food();
         try {
             newFood.setName(nameText.getText());
-            newFood.setVnd(parseInt(vndText.getText()));
+            NumberFormat nf = NumberFormat.getInstance(new Locale("en", "US"));
+            String vnd = nf.format(Integer.parseInt(vndText.getText()));
+            newFood.setVnd(vnd);
             newFood.setKg(parseInt(kgText.getText()));
                 foodListHeo.add(newFood);
                 foodListAll.add(foodListHeo.get(foodListHeo.size()-1));
@@ -217,8 +256,10 @@ public class Controller implements Initializable {
     public void addGa(ActionEvent event) {
         Food newFood = new Food();
         try {
+            NumberFormat nf = NumberFormat.getInstance(new Locale("en", "US"));
+            String vnd = nf.format(Integer.parseInt(vndText.getText()));
             newFood.setName(nameText.getText());
-            newFood.setVnd(parseInt(vndText.getText()));
+            newFood.setVnd(vnd);
             newFood.setKg(parseInt(kgText.getText()));
                 foodListGa.add(newFood);
                 foodListAll.add(foodListGa.get(foodListGa.size()-1));
@@ -241,8 +282,10 @@ public class Controller implements Initializable {
     public void addBo(ActionEvent event) {
         Food newFood1 = new Food();
         try {
+            NumberFormat nf = NumberFormat.getInstance(new Locale("en", "US"));
+            String vnd = nf.format(Integer.parseInt(vndText.getText()));
             newFood1.setName(nameText.getText());
-            newFood1.setVnd(parseInt(vndText.getText()));
+            newFood1.setVnd(vnd);
             newFood1.setKg(parseInt(kgText.getText()));
                     foodListBo.add(newFood1);
                     foodListAll.add(foodListBo.get(foodListBo.size()-1));
@@ -296,6 +339,21 @@ public class Controller implements Initializable {
                         listPool.remove(listPool.get(i));
                     }
                 }
+                for (int i = 0; i < foodListGa.size(); i++) {
+                    if (foodListGa.get(i).getId() == selectedFood.getId()) {
+                        foodListGa.remove(foodListGa.get(i));
+                    }
+                }
+                for (int i = 0; i < foodListHeo.size(); i++) {
+                    if (foodListHeo.get(i).getId() == selectedFood.getId()) {
+                        foodListHeo.remove(foodListHeo.get(i));
+                    }
+                }
+                for (int i = 0; i < foodListBo.size(); i++) {
+                    if (foodListBo.get(i).getId() == selectedFood.getId()) {
+                        foodListBo.remove(foodListBo.get(i));
+                    }
+                }
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -321,7 +379,7 @@ public class Controller implements Initializable {
         try {
             fileHeo= new FileOutputStream("Food.txt");
             objectHeo = new ObjectOutputStream(fileHeo);
-            for(Food food : foodListHeo){
+            for(Food food : foodListGa){
                 objectHeo.writeObject(food);
             }
         } catch (IOException exception) {

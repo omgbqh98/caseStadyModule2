@@ -9,27 +9,36 @@ public class Food implements Serializable {
     private int id ;
     private static int cruID = 1;
     private String name;
-    private int vnd;
+    private String vnd;
     private int kg;
-    private int thanhTien;
+    private long thanhTien;
+    private String time;
 
     public Food() {
         this.id = cruID++;
     }
 
-    public Food(int id, String name, int vnd, int kg) {
+    public Food(int id, String name, String vnd, int kg) {
         this.id = id;
         this.name = name;
         this.vnd = vnd;
         this.kg = kg;
     }
 
-    public int getThanhTien() {
+    public long getThanhTien() {
         return thanhTien;
     }
 
-    public void setThanhTien(int thanhTien) {
+    public void setThanhTien(long thanhTien) {
         this.thanhTien = thanhTien;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public int getId() {
@@ -48,11 +57,11 @@ public class Food implements Serializable {
         this.name = name;
     }
 
-    public int getVnd() {
+    public String getVnd() {
         return vnd;
     }
 
-    public void setVnd(int vnd) {
+    public void setVnd(String vnd) {
         this.vnd = vnd;
     }
 

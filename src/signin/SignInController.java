@@ -23,7 +23,7 @@ public class SignInController {
             FXMLLoader loader= new FXMLLoader();
             loader.setLocation(getClass().getResource("../sample/sample.fxml"));
             Parent view= loader.load();
-            Scene scene= new Scene(view, 900,550);
+            Scene scene= new Scene(view, 950,550);
             stage.setScene(scene);
             stage.show();
         }else {

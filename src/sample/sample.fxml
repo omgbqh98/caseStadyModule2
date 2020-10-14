@@ -54,12 +54,13 @@
       <TextField fx:id="buyKgText" disable="true" layoutX="639.0" layoutY="86.0" prefHeight="25.0" prefWidth="135.0" promptText="kg" />
       <TextField fx:id="buyVndText" disable="true" layoutX="639.0" layoutY="61.0" prefHeight="25.0" prefWidth="135.0" promptText="Giá" />
       <Button layoutX="698.0" layoutY="148.0" mnemonicParsing="false" onAction="#buy" text="Thanh toán" />
-      <TableView fx:id="table2" layoutX="522.0" layoutY="215.0" prefHeight="292.0" prefWidth="353.0">
+      <TableView fx:id="table2" layoutX="522.0" layoutY="215.0" prefHeight="292.0" prefWidth="401.0">
         <columns>
-          <TableColumn fx:id="nameColimn2" prefWidth="88.0" text="name" />
-            <TableColumn fx:id="vndColumn2" prefWidth="97.3333740234375" text="Gia" />
-            <TableColumn fx:id="kgColumn2" prefWidth="67.3333740234375" text="kg" />
-            <TableColumn fx:id="thanhTienColumn" prefWidth="108.0" text="Thành Tiền" />
+          <TableColumn fx:id="nameColimn2" prefWidth="79.99993896484375" text="name" />
+            <TableColumn fx:id="vndColumn2" prefWidth="56.66668701171875" text="Gia" />
+            <TableColumn fx:id="kgColumn2" prefWidth="67.33331298828125" text="kg" />
+            <TableColumn fx:id="thanhTienColumn" prefWidth="94.66668701171875" text="Thành Tiền" />
+            <TableColumn fx:id="timeColum" prefWidth="104.0" text="Time" />
         </columns>
       </TableView>
       <Button layoutX="639.0" layoutY="148.0" mnemonicParsing="false" onAction="#select" prefHeight="25.0" prefWidth="51.0" text="Select" />
@@ -68,7 +69,7 @@
             <Image url="@../image/kinhlup.jpg" />
          </image>
       </ImageView>
-      <Button layoutX="639.0" layoutY="188.0" mnemonicParsing="false" onAction="#delete2" prefHeight="25.0" prefWidth="36.0" text="xóa" />
+      <Button layoutX="585.0" layoutY="187.0" mnemonicParsing="false" onAction="#delete2" prefHeight="25.0" prefWidth="36.0" text="xóa" />
       <Label layoutX="618.0" layoutY="90.0" text="kg" textFill="#df1c1c" />
       <Label layoutX="616.0" layoutY="60.0" text="giá" textFill="#e31616" />
       <Button layoutX="386.0" layoutY="27.0" mnemonicParsing="false" onAction="#update" prefHeight="25.0" prefWidth="85.0" text="Update" textFill="#1d8746">
@@ -79,12 +80,12 @@
       <TextField fx:id="buyIDText" disable="true" layoutX="639.0" layoutY="9.0" prefHeight="25.0" prefWidth="135.0" promptText="ID" />
       <Label layoutX="619.0" layoutY="13.0" text="ID" textFill="#e11717" />
       <Label layoutX="603.0" layoutY="40.0" text="Name" textFill="#df0f0f" />
-      <Button layoutX="686.0" layoutY="188.0" mnemonicParsing="false" onAction="#finish" prefHeight="25.0" prefWidth="87.0" text="Hoàn Thành">
+      <Button layoutX="635.0" layoutY="187.0" mnemonicParsing="false" onAction="#finish" prefHeight="25.0" prefWidth="87.0" text="Hoàn Thành">
          <font>
             <Font name="Bell MT" size="12.0" />
          </font></Button>
       <TextField fx:id="newKgText" layoutX="639.0" layoutY="115.0" prefHeight="25.0" prefWidth="135.0" promptText="input kg" />
-      <TableView fx:id="tablePool" layoutX="189.0" layoutY="600.0" prefHeight="129.0" prefWidth="529.0">
+      <TableView fx:id="tablePool" layoutX="5.0" layoutY="599.0" prefHeight="129.0" prefWidth="529.0">
          <columns>
             <TableColumn fx:id="idColumn1" prefWidth="107.33334732055664" text="id" />
             <TableColumn fx:id="nameColumn1" prefWidth="124.66667175292969" text="name" />
@@ -133,5 +134,18 @@
             <Image url="@../image/Files-icon.png" />
          </image>
       </ImageView>
+      <TableView fx:id="tableHistory" layoutX="543.0" layoutY="602.0" prefHeight="129.0" prefWidth="353.0">
+         <columns>
+            <TableColumn fx:id="nameColumnHistory" prefWidth="88.0" text="name" />
+            <TableColumn fx:id="vndColumnHistory" prefWidth="97.3333740234375" text="Gia" />
+            <TableColumn fx:id="kgColumnHistory" prefWidth="67.3333740234375" text="kg" />
+            <TableColumn fx:id="thanhTienColumnHistory" prefWidth="108.0" text="Thành Tiền" />
+         </columns>
+      </TableView>
+      <Button layoutX="736.0" layoutY="187.0" mnemonicParsing="false" onAction="#history" prefHeight="25.0" prefWidth="87.0" text="History">
+         <font>
+            <Font name="Bell MT" size="12.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
